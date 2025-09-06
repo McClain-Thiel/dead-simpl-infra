@@ -72,3 +72,12 @@ resource "kubernetes_secret" "firebase_adminsdk" {
 
   type = "Opaque"
 }
+
+# Reserve static external IPs for LoadBalancer services
+resource "google_compute_global_address" "frontend_staging_ip" {
+  name = "frontend-staging-ip"
+}
+
+resource "google_compute_global_address" "backend_staging_ip" {
+  name = "backend-staging-ip"
+}

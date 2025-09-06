@@ -81,6 +81,15 @@ resource "kubernetes_secret" "firebase_adminsdk" {
   type = "Opaque"
 }
 
+# Reserve static external IPs for LoadBalancer services
+resource "google_compute_global_address" "frontend_prod_ip" {
+  name = "frontend-prod-ip"
+}
+
+resource "google_compute_global_address" "backend_prod_ip" {
+  name = "backend-prod-ip"
+}
+
 resource "helm_release" "backend_prod" {
   name       = "backend-prod"
   chart      = "/Users/mcclainthiel/Documents/dead-simpl/helm/backend"
