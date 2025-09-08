@@ -91,9 +91,9 @@ resource "google_compute_global_address" "backend_prod_ip" {
 }
 
 resource "helm_release" "backend_prod" {
-  name       = "backend-prod"
-  chart      = "/Users/mcclainthiel/Documents/dead-simpl/helm/backend"
-  namespace  = "production"
+  name             = "backend-prod"
+  chart            = "/Users/mcclainthiel/Documents/dead-simpl/helm/backend"
+  namespace        = "production"
   create_namespace = true
 
   values = [
@@ -102,9 +102,9 @@ resource "helm_release" "backend_prod" {
 }
 
 resource "helm_release" "frontend_prod" {
-  name       = "frontend-prod"
-  chart      = "/Users/mcclainthiel/Documents/dead-simpl/helm/frontend"
-  namespace  = "production"
+  name             = "frontend-prod"
+  chart            = "/Users/mcclainthiel/Documents/dead-simpl/helm/frontend"
+  namespace        = "production"
   create_namespace = true
 
   values = [
