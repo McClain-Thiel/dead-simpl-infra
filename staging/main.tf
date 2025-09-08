@@ -120,24 +120,24 @@ resource "google_service_networking_connection" "private_vpc_connection" {
 
 # CloudSQL Postgres instance for staging
 resource "google_sql_database_instance" "staging_postgres" {
-  name             = "staging-postgres"
-  database_version = "POSTGRES_15"
-  region           = var.region
+  name                = "staging-postgres"
+  database_version    = "POSTGRES_15"
+  region              = var.region
   deletion_protection = false
 
   depends_on = [google_service_networking_connection.private_vpc_connection]
 
   settings {
     tier = "db-f1-micro"
-    
+
     ip_configuration {
-      ipv4_enabled    = false
-      private_network = google_compute_network.vpc.id
+      ipv4_enabled                                  = false
+      private_network                               = google_compute_network.vpc.id
       enable_private_path_for_google_cloud_services = true
     }
-    
+
     backup_configuration {
-      enabled = true
+      enabled    = true
       start_time = "03:00"
     }
   }
@@ -175,13 +175,13 @@ resource "google_secret_manager_secret" "staging_db_url" {
 }
 
 resource "google_secret_manager_secret_version" "staging_db_url" {
-  secret = google_secret_manager_secret.staging_db_url.id
+  secret      = google_secret_manager_secret.staging_db_url.id
   secret_data = "postgresql://${google_sql_user.staging_user.name}:${random_password.db_password.result}@${google_sql_database_instance.staging_postgres.private_ip_address}/${google_sql_database.staging_db.name}"
 }
 
 # Create database URL secret in Kubernetes
 data "google_secret_manager_secret_version" "staging_db_url" {
-  secret = google_secret_manager_secret.staging_db_url.secret_id
+  secret     = google_secret_manager_secret.staging_db_url.secret_id
   depends_on = [google_secret_manager_secret_version.staging_db_url]
 }
 
